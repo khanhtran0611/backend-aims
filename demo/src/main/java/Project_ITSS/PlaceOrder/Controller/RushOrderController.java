@@ -80,26 +80,26 @@ public class RushOrderController {
 //        return "rush-delivery-success";
 //    }
 
-    @PostMapping("/Rushdeliveryinfo")
-    public Map<String, Object> SubmitDeliveryInformation(@RequestParam String name, @RequestParam String phone, @RequestParam String email, @RequestParam String address, @RequestParam String province, @RequestParam String payMethod, @RequestParam String delivery_message, @RequestParam int deliveryFee){
-        // Kiểm tra tính hợp lệ của các thông tin được nhập vào
-        boolean result = nonDBService.CheckInfoValidity(name,phone,email,address,province,payMethod);
-        Map<String, Object> json = new HashMap<>();
-        // Nếu thông tin không hợp lệ
-        // Từ đoạn này có thể merge với RushOrder, nhưng tôi chưa biết merge thế nào
-        if(!result){
-            json.put("message","Your provided information is invalid, please select again");
-            return json;
-        }
-        DeliveryInformation deliveryInformation = new DeliveryInformation();                        // Tạo entity deliveryInfo
-        deliveryInformation.createDeliveryInfo(name,phone,email,address,province,delivery_message); // Điền thông tin vào entity đó
-//        int[] deliveryfees = orderService.CalculateDeliveryFee(province,order);
-//        int deliveryfee = deliveryfees[0] + deliveryfees[1];                                        // Tính toán giá tiền phải nộp
-        deliveryInformation.setDelivery_fee(deliveryFee);
-//        json.put("delivery fees",deliveryfees);
-//        json.put("order",order);
-        return json;                                // Trả lại thông tin về invoice lẫn chi phí vận chuyển
-    }
+//     @PostMapping("/Rushdeliveryinfo")
+//     public Map<String, Object> SubmitDeliveryInformation(@RequestParam String name, @RequestParam String phone, @RequestParam String email, @RequestParam String address, @RequestParam String province, @RequestParam String payMethod, @RequestParam String delivery_message, @RequestParam int deliveryFee){
+//         // Kiểm tra tính hợp lệ của các thông tin được nhập vào
+//         boolean result = nonDBService.CheckInfoValidity(name,phone,email,address,province,payMethod);
+//         Map<String, Object> json = new HashMap<>();
+//         // Nếu thông tin không hợp lệ
+//         // Từ đoạn này có thể merge với RushOrder, nhưng tôi chưa biết merge thế nào
+//         if(!result){
+//             json.put("message","Your provided information is invalid, please select again");
+//             return json;
+//         }
+//         DeliveryInformation deliveryInformation = new DeliveryInformation();                        // Tạo entity deliveryInfo
+//         deliveryInformation.createDeliveryInfo(name,phone,email,address,province,delivery_message); // Điền thông tin vào entity đó
+// //        int[] deliveryfees = orderService.CalculateDeliveryFee(province,order);
+// //        int deliveryfee = deliveryfees[0] + deliveryfees[1];                                        // Tính toán giá tiền phải nộp
+//         deliveryInformation.setDelivery_fee(deliveryFee);
+// //        json.put("delivery fees",deliveryfees);
+// //        json.put("order",order);
+//         return json;                                // Trả lại thông tin về invoice lẫn chi phí vận chuyển
+//     }
 
     // 5. Thông báo lỗi
     @GetMapping("/notify-error")

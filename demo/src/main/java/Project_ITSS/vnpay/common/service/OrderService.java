@@ -39,7 +39,7 @@ public class OrderService {
             TransactionInfo transaction = new TransactionInfo();
             transaction.setOrderId(orderId);
             transaction.setTransactionNo(fields.get("vnp_TransactionNo"));
-            transaction.setAmount(Long.parseLong(fields.getOrDefault("vnp_Amount", "0")));
+            transaction.setAmount(Long.parseLong(fields.getOrDefault("vnp_Amount", "0")) / 100);
             transaction.setBankCode(fields.get("vnp_BankCode"));
             transaction.setResponseCode(fields.get("vnp_ResponseCode"));
             transaction.setTransactionStatus(fields.get("vnp_TransactionStatus"));

@@ -14,7 +14,7 @@ public class Book extends Product {
     private String publication_date;
     private String authors;
     private String publishers;
-    private String coverType;
+    private String cover_type;
 
     public String getType(){
         return "book";

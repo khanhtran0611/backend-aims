@@ -16,7 +16,7 @@ public class DVDRepository_AddProduct implements DetailProductRepository_AddProd
 
     public void insertProductInfo(Product product){
         DVD dvd = (DVD)product;
-        String importDateStr = dvd.getReleaseDate(); // ví dụ "2023-05-30"
+        String importDateStr = dvd.getRelease_date(); // ví dụ "2023-05-30"
         LocalDate localDate = LocalDate.parse(importDateStr);
         java.sql.Date sqlDate = java.sql.Date.valueOf(localDate);
         System.out.println(sqlDate);
@@ -29,7 +29,7 @@ public class DVDRepository_AddProduct implements DetailProductRepository_AddProd
                 dvd.getDVD_type(),
                 dvd.getGenre(),
                 dvd.getStudio(),
-                dvd.getDirectors());
+                dvd.getDirector());
     }
 
     @Override

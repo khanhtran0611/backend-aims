@@ -86,8 +86,9 @@ public class UpdateProductController {
 
        // Lưu lại các thông tin đó vào database, dựa trên loại của product đó
        productService.updateProductDetail(product,product.getType());
-//       loggerService.saveLogger(product);
+       loggerService.saveLogger(product);
        json.put("status",1);
+       json.put("message","The product is successfully updated !");
        return json;
    }
 

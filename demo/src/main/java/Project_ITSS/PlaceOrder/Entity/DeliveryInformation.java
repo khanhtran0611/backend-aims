@@ -18,12 +18,13 @@ public class DeliveryInformation {
      private String delivery_message;
      private int delivery_fee;
 
-     public void createDeliveryInfo(String name, String phone, String email, String address, String province, String delivery_message){
+     public void createDeliveryInfo(String name, String phone, String email, String address, String province, String delivery_message,int delivery_fee){
           this.name = name;
           this.phone = phone;
           this.email = email;
           this.address = address;
           this.province = province;
           this.delivery_message = delivery_message;
+          this.delivery_fee = delivery_fee;
      }
 }

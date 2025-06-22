@@ -7,6 +7,8 @@ import Project_ITSS.PlaceOrder.Repository.ProductRepository_PlaceOrder;
 import Project_ITSS.PlaceOrder.Service.NonDBService_PlaceOrder;
 import Project_ITSS.PlaceOrder.Service.OrderService_PlaceOrder;
 import Project_ITSS.PlaceOrder.Service.ProductService_PlaceOrder;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -16,7 +18,15 @@ import org.springframework.http.ResponseEntity;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+@Getter
+@Setter
+class OrderInfoDTO{
+    private Order order;
+    private DeliveryInformation deliveryInformation;
+}
 
 
 @RequestMapping("/")
@@ -39,22 +49,36 @@ public class PlaceOrderController {
         return;
     }
 
+    @GetMapping("/orders")
+    public List<OrderInfo> getALlOrders(){
+         return orderService.getAllOrders();
+    }
+
 
     @PostMapping("/api/order/approve")
-    public ResponseEntity<?> approveOrder(@RequestParam("order_id") long orderId) {
+    public Map<String, Object> approveOrder(@RequestParam("order_id") long orderId) {
+        Map<String, Object> json = new HashMap<>();
         try {
             Order order = orderRepository.getOrderById(orderId);
             if (order == null) {
-                return ResponseEntity.status(404).body("Order not found");
+                json.put("status",0);
+                json.put("message","Order not found");
+                return json;
             }
             if (!"pending".equalsIgnoreCase(order.getStatus())) {
-                return ResponseEntity.status(400).body("Order status must be 'pending' to approve. Current status: " + order.getStatus());
+                json.put("status",0);
+                json.put("message","Order status must be 'pending' to approve. Current status: " + order.getStatus());
+                return json;
             }
             orderRepository.updateOrderStatusToApprove(orderId);
-            return ResponseEntity.ok("Order " + orderId + " has been approved.");
+            json.put("status",1);
+            json.put("message","Order " + orderId + " has been approved.");
+            return json;
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("Error approving order: " + e.getMessage());
+            json.put("status",0);
+            json.put("message","Error approving order: " + e.getMessage());
+            return json;
         }
     }
 
@@ -87,6 +111,25 @@ public class PlaceOrderController {
         return json;                 // trả về entity order
     }
 
+    @GetMapping("/order-detail")
+    public Map<String,Object> getOrderDetail(@RequestParam("order_id") int order_id){
+        Map<String,Object> json = new HashMap<>();
+        try{
+            OrderTrackingInfo order = orderService.getTrackingInfo(order_id);
+            json.put("status",1);
+            json.put("message","Order details is successfully taken !");
+            json.put("order",order);
+            return json;
+        } catch (Exception e) {
+            e.printStackTrace();
+            json.put("status",0);
+            json.put("message","Order details is failed to be taken !");
+            return json;
+        }
+
+
+    }
+
 
     @PostMapping("/recalculate")
     public Map<String, Object> recalculate(@RequestBody FeeInfoDTO feeInfoDTO) {
@@ -106,14 +149,13 @@ public class PlaceOrderController {
 
     // Sau khi người dùng điền thông tin cá nhân, các thông tin sẽ được đưa vào trong hàm này để xử lý tiếp
     @PostMapping("/deliveryinfo")
-    public Map<String, Object> SubmitDeliveryInformation(@RequestParam String name,@RequestParam String phone,@RequestParam String email,@RequestParam String address,@RequestParam String province,@RequestParam String delivery_message,@RequestBody int deliveryFee){
+    public Map<String, Object> SubmitDeliveryInformation(@RequestBody DeliveryInformation deliveryInfo){
 
         Map<String, Object> json = new HashMap<>();
         DeliveryInformation deliveryInformation = new DeliveryInformation();                        // Tạo entity deliveryInfo
-        deliveryInformation.createDeliveryInfo(name,phone,email,address,province,delivery_message); // Điền thông tin vào entity đó
+        deliveryInformation.createDeliveryInfo(deliveryInfo.getName(),deliveryInfo.getPhone(),deliveryInfo.getEmail(),deliveryInfo.getAddress(),deliveryInfo.getProvince(),deliveryInfo.getDelivery_message(),deliveryInfo.getDelivery_fee()); // Điền thông tin vào entity đó
 //        int[] deliveryfees = orderService.CalculateDeliveryFee(province,order);
 //        int deliveryfee = deliveryfees[0] + deliveryfees[1];   // Tính toán giá tiền phải nộp
-        deliveryInformation.setDelivery_fee(deliveryFee);
 //        Invoice invoice = new Invoice();                                                            // Tạo entity về Invoice
 //        invoice.CreateInvoice(order.getOrder_id(),"Your total delivery fee is " + String.valueOf(deliveryfee) + " and your total amount needed to be paid is " + String.valueOf(order.getTotal_after_VAT()));
         json.put("delivery_information",deliveryInformation);
@@ -121,12 +163,23 @@ public class PlaceOrderController {
         return json;                                // Trả lại thông tin về invoice lẫn chi phí vận chuyển
     }
 
+
+    @PostMapping("/finish-order")
     // Sau khi thanh toán xong (Tức sau khi kết thúc PayOrder UseCase) , gọi đến hàm này để xử lý nốt các công đoạn cuối
-    public void FinishPlaceOrder(DeliveryInformation deliveryInformation,Order order){
+    public Map<String, Object> FinishPlaceOrder(@RequestBody OrderInfoDTO orderInfoDTO){
+        Map<String, Object> json = new HashMap<>();
+        DeliveryInformation deliveryInformation = orderInfoDTO.getDeliveryInformation();
+        Order order = orderInfoDTO.getOrder();
+        System.out.println(deliveryInformation.getDelivery_fee());
+        System.out.println(order.getTotal_after_VAT());
         orderService.saveOrder(order,deliveryInformation);      //   Lưu lại thông tin order trong database
-        nonDBService.SendSuccessEmail(deliveryInformation.getEmail(),"Thông báo về việc đặt hàng","Bạn đã đật hàng thành công !!!");  // Gửi email thông báo
+        nonDBService.SendSuccessEmail(deliveryInformation.getEmail(),"Thông báo về việc đặt hàng","Bạn đã đật hàng thành công. Mã đơn hàng của bạn là:" + order.getOrder_id());  // Gửi email thông báo
+        json.put("status",1);
+        return json;
         // khi gửi email , cần gửi một mã order để xử lý refund nếu có.
     }
+
+
 }
 
 

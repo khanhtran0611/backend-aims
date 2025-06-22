@@ -19,6 +19,8 @@ public class Order {
     private String status;
     private Long delivery_id;
     private final int VAT = 10;
+    private String order_time;
+    private String payment_method;
     List<Orderline> orderlineList = new ArrayList<>();
 
 
@@ -39,9 +41,6 @@ public class Order {
         return orderlineList;
     }
 
-    public void saveOrder(Order order,DeliveryInformation deliveryInformation){
-
-    }
 
 
 

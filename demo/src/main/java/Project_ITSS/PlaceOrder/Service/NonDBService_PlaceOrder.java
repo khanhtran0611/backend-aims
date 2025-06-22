@@ -49,7 +49,8 @@ public class NonDBService_PlaceOrder {
 
     public void SendSuccessEmail(String toEmail,String subject,String content){
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(toEmail);
+        System.out.println(toEmail);
+        message.setTo(toEmail);
         message.setSubject(subject);
         message.setText(content);
         javaMailSender.send(message);

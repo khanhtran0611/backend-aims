@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/order")
+@CrossOrigin(origins = "http://localhost:3000")
 public class CancelOrderController {
     @Autowired
     private OrderRepository_PlaceOrder orderRepository;

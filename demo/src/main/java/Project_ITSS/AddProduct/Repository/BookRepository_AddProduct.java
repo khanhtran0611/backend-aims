@@ -27,17 +27,22 @@ public class BookRepository_AddProduct implements DetailProductRepository_AddPro
         System.out.println(sqlDate);
         System.out.println(book.getAuthors());
         System.out.println(book.getPublishers());
-        System.out.println(book.getCoverType());
-         jdbcTemplate.update("INSERT INTO Book " +
-                 "(Product_id, genre, page_count, publication_date, authors, publishers, coverType) " +
-                 "VALUES (?, ?, ?, ?, ?, ?, ?)",
-                 book.getProduct_id(),
-                 book.getGenre(),
-                 book.getPage_count(),
-                 sqlDate,
-                 book.getAuthors(),
-                 book.getPublishers(),
-                 book.getCoverType());
+        System.out.println(book.getCover_type());
+        try{
+            jdbcTemplate.update("INSERT INTO Book " +
+                            "(product_id, genre, page_count, publication_date, authors, publishers, cover_type) " +
+                            "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    book.getProduct_id(),
+                    book.getGenre(),
+                    book.getPage_count(),
+                    sqlDate,
+                    book.getAuthors(),
+                    book.getPublishers(),
+                    book.getCover_type());
+        }catch(Exception e){
+            System.out.println(e);
+        }
+
     }
 
     @Override

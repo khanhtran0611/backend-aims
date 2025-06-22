@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class ProductRepository_PlaceOrder {
 
@@ -54,4 +56,9 @@ public class ProductRepository_PlaceOrder {
         """;
         return jdbcTemplate.queryForObject(sql, Boolean.class);
     }
+
+    public String getProductTitleByOrderId(int order_id){
+        String sql = "SELECT p.title FROM Product p JOIN Orderline ol USING(product_id) JOIN \"Order\" o USING(order_id) WHERE o.order_id = ?";
+        return jdbcTemplate.queryForObject(sql,new Object[]{order_id},String.class);
+     }
 }

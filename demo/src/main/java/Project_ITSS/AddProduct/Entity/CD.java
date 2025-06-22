@@ -9,11 +9,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CD extends Product{
     private long CD_id;
-    private String TrackList;
+    private String track_list;
     private String genre;
-    private String recordLabel;
+    private String record_label;
     private String artists;
-    private String releaseDate;
+    private String release_date;
 
     public String getType(){
         return "cd";

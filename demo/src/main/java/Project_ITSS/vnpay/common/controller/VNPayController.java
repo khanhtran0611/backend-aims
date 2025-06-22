@@ -101,7 +101,7 @@ public class VNPayController {
             try {
                 String orderId = fields.get("vnp_TxnRef");
                 result.put("transactionId", orderId);
-                result.put("amount", Long.parseLong(fields.getOrDefault("vnp_Amount", "0")));
+                result.put("amount", Long.parseLong(fields.getOrDefault("vnp_Amount", "0")) / 100);
                 result.put("orderInfo", fields.get("vnp_OrderInfo"));
                 result.put("responseCode", fields.get("vnp_ResponseCode"));
                 result.put("vnpayTransactionId", fields.get("vnp_TransactionNo"));
@@ -193,14 +193,14 @@ public class VNPayController {
             try {
                 String orderId = fields.get("vnp_TxnRef");
                 result.put("transactionId", orderId);
-                result.put("amount", Long.parseLong(fields.getOrDefault("vnp_Amount", "0")));
+                result.put("amount", Long.parseLong(fields.getOrDefault("vnp_Amount", "0")) / 100);
                 result.put("orderInfo", fields.get("vnp_OrderInfo"));
                 result.put("responseCode", fields.get("vnp_ResponseCode"));
                 result.put("vnpayTransactionId", fields.get("vnp_TransactionNo"));
                 result.put("bankCode", fields.get("vnp_BankCode"));
                 result.put("transactionStatus", fields.get("vnp_TransactionStatus"));
                 result.put("payDate", fields.get("vnp_PayDate"));
-                
+                System.out.println("Amount: " + Long.parseLong(fields.getOrDefault("vnp_Amount", "0")) / 100);
                 // Determine payment status
                 String responseCode = fields.get("vnp_ResponseCode");
                 if ("00".equals(responseCode)) {

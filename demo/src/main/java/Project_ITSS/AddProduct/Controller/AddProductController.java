@@ -41,36 +41,6 @@ public class AddProductController {
    }
 
 
-   // Kiểm tra tính hợp lệ của thông tin đã được đưa vào
-   public boolean checkProductInfoValidity(Product product){
-       if(product.getTitle().length() > 100 || product.getImage_url().length() > 100 || product.getBarcode().length() > 100 || product.getImport_date().length() > 100 ||  product.getIntroduction().length() > 100) return false;
-       DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-       if(product instanceof Book book){
-           try{
-                LocalDate.parse(book.getPublication_date(), formatter);
-            }catch (DateTimeParseException e){
-                 return false;
-            }
-       }else if(product instanceof DVD dvd){
-           try{
-                 LocalDate.parse(dvd.getImport_date(), formatter);
-             }catch (DateTimeParseException e){
-                 return false;
-             }
-       }else if(product instanceof CD cd){
-            try{
-                LocalDate.parse(cd.getImport_date(), formatter);
-                LocalDate.parse(cd.getReleaseDate(), formatter);
-            }catch (DateTimeParseException e){
-                return false;
-            }
-       }else{
-           return false;
-       }
-       return true;
-   }
-
 
    // Sau khi thông tin được điền vào chúng được nộp lại vào hàm này để xử lý
    @PostMapping("/adding/ProductInfo")
@@ -91,6 +61,7 @@ public class AddProductController {
        productService.insertProductDetail(product,product.getType());
        loggerService.saveLogger(product);
        json.put("status",1);
+       json.put("product_id",Product_id);
        return json;
    }
 
