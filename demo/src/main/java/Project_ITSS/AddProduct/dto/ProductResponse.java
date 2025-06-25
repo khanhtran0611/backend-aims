@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class ProductResponse {
     private int status;
     private String message;
-    private Integer productId;
+    private Integer product_id;
     private String errorCode;
     private String error;
     

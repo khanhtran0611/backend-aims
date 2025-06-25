@@ -4,17 +4,15 @@ import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { LogOut, History } from "lucide-react"
+import { LogOut } from "lucide-react"
 import { useAuth } from "@/lib/auth-context"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
-import ActionHistory from "@/components/action-history"
 
 export default function ProductManagerHeader() {
   const { logout, user } = useAuth()
   const router = useRouter()
   const { toast } = useToast()
-  const [showHistory, setShowHistory] = useState(false)
 
   const handleLogout = () => {
     logout()
@@ -38,19 +36,12 @@ export default function ProductManagerHeader() {
           </div>
         </Link>
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm" onClick={() => setShowHistory(true)} className="flex items-center gap-2">
-            <History className="h-4 w-4" />
-            <span>History</span>
-          </Button>
           <Button variant="outline" size="sm" onClick={handleLogout} className="flex items-center gap-2">
             <LogOut className="h-4 w-4" />
             <span>Log out</span>
           </Button>
         </div>
       </div>
-
-      {/* Action History Modal */}
-      <ActionHistory open={showHistory} onClose={() => setShowHistory(false)} />
     </header>
   )
 }
