@@ -1,11 +1,11 @@
-package Project_ITSS.ViewProduct2.Service;
+package Project_ITSS.ViewProduct.Service;
 
-import Project_ITSS.ViewProduct2.Repository.DetailProductRepository_ViewProduct;
+import Project_ITSS.ViewProduct.Repository.DetailProductRepository_ViewProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import Project_ITSS.ViewProduct2.Entity.Product;
-import Project_ITSS.ViewProduct2.Repository.ProductRepository_ViewProduct;
+import Project_ITSS.ViewProduct.Entity.Product;
+import Project_ITSS.ViewProduct.Repository.ProductRepository_ViewProduct;
 
 import java.util.HashMap;
 import java.util.List;

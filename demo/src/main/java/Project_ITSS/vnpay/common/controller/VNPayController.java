@@ -250,7 +250,6 @@ public class VNPayController {
                     result.put("message", "Payment failed with code: " + responseCode);
                     processFailedPayment(orderId, responseCode);
                 }
-
             } catch (Exception e) {
                 logger.error("Error processing return URL parameters", e);
                 result.put("status", "ERROR");
@@ -260,6 +259,10 @@ public class VNPayController {
         } else {
             result.put("status", "INVALID");
             result.put("message", "Invalid signature");
+        }
+        String responseCode = fields.get("vnp_ResponseCode");
+        if (!"00".equals(responseCode)){
+            return new RedirectView("http://localhost:3000/");
         }
         String orderId = fields.get("vnp_TxnRef");
         orderService.saveTransactionInfo(orderId, fields);

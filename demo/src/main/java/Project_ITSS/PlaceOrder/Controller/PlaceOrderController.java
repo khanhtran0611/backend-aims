@@ -28,10 +28,10 @@ public class PlaceOrderController {
 
     @Autowired
     PlaceOrderController(List<IDeliveryFeeCalculating> iDeliveryFeeCalculatings,
-                         List<IProcessTrackingInfo> iProcessTrackingInfos){
-       for(IDeliveryFeeCalculating service : iDeliveryFeeCalculatings){
-           DeliveryFeeCalculatingsMap.put(service.getVersion(),service);
-       }
+                                     List<IProcessTrackingInfo> iProcessTrackingInfos){
+        for(IDeliveryFeeCalculating service : iDeliveryFeeCalculatings){
+            DeliveryFeeCalculatingsMap.put(service.getVersion(),service);
+        }
     }
 
     @Autowired
@@ -41,23 +41,16 @@ public class PlaceOrderController {
     @Autowired
     private EmailNotification_PlaceOrder nonDBService;
     @Autowired
-    private OrderRepository_PlaceOrder orderRepository;
-    @Autowired
     private DeliveryInformationService deliveryInformationService;
     @Autowired
     private OrderlineService_PlaceOrder orderlineService;
     @Autowired
-    private ProcessTrackingInfo processTrackingInfo;
+    private InfoValidationService infoValidationService;
 
     @GetMapping("/test")
     public ResponseEntity<String> JustForFun(){
         System.out.println(100);
         return ResponseEntity.ok("Test successful");
-    }
-
-    @GetMapping("/orders")
-    public ResponseEntity<List<OrderInfo>> getALlOrders(){
-         return ResponseEntity.ok(orderService.getAllOrders());
     }
 
     @PostMapping("/placeorder")
@@ -84,37 +77,24 @@ public class PlaceOrderController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/order-detail")
-    public ResponseEntity<OrderDetailResponse> getOrderDetail(@RequestParam("order_id") int order_id){
-        try{
-            OrderTrackingInfo order = processTrackingInfo.getTrackingOrder(order_id);
-            OrderDetailResponse response = new OrderDetailResponse(1, "Order details is successfully taken !", order);
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-            OrderDetailResponse response = new OrderDetailResponse(0, "Order details is failed to be taken !", null);
-            return ResponseEntity.badRequest().body(response);
-        }
+
+    @PostMapping("/deliveryinfo")
+    public ResponseEntity<DeliveryInfoResponse> SubmitDeliveryInformation(@RequestBody DeliveryInformation deliveryInfo){
+        // Validate string field lengths before processing
+        infoValidationService.validateDeliveryInfoStringLength(deliveryInfo);
+        
+        DeliveryInformation deliveryInformation = new DeliveryInformation();
+        deliveryInformation.createDeliveryInfo(deliveryInfo.getName(),deliveryInfo.getPhone(),deliveryInfo.getEmail(),deliveryInfo.getAddress(),deliveryInfo.getProvince(),deliveryInfo.getDelivery_message(),deliveryInfo.getDelivery_fee());
+        DeliveryInfoResponse response = new DeliveryInfoResponse(deliveryInformation);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/recalculate")
     public ResponseEntity<RecalculateResponse> recalculate(@RequestBody CalculateFeeDTO feeInfoDTO) {
-        String province = feeInfoDTO.getProvince();
-        Order order = feeInfoDTO.getOrder();
-        System.out.println(province);
-        System.out.println(order.getTotal_after_VAT());
         IDeliveryFeeCalculating service = DeliveryFeeCalculatingsMap.get(calculating_service_version);
         int[] deliveryfees = service.CalculateDeliveryFee(feeInfoDTO);
         int deliveryfee = deliveryfees[0] + deliveryfees[1];
         RecalculateResponse response = new RecalculateResponse(deliveryfees[0], deliveryfees[1], deliveryfee);
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping("/deliveryinfo")
-    public ResponseEntity<DeliveryInfoResponse> SubmitDeliveryInformation(@RequestBody DeliveryInformation deliveryInfo){
-        DeliveryInformation deliveryInformation = new DeliveryInformation();
-        deliveryInformation.createDeliveryInfo(deliveryInfo.getName(),deliveryInfo.getPhone(),deliveryInfo.getEmail(),deliveryInfo.getAddress(),deliveryInfo.getProvince(),deliveryInfo.getDelivery_message(),deliveryInfo.getDelivery_fee());
-        DeliveryInfoResponse response = new DeliveryInfoResponse(deliveryInformation);
         return ResponseEntity.ok(response);
     }
 
@@ -129,9 +109,6 @@ public class PlaceOrderController {
         orderService.saveOrder(order);
         orderlineService.saveOrderlines(order);
         // Cập nhật số lượng sản phẩm sau khi lưu orderline
-        for (Orderline orderline : order.getOrderLineList()) {
-            productService.updateProductQuantity(orderline.getProduct_id(), orderline.getQuantity());
-        }
         nonDBService.SendSuccessEmail(deliveryInformation.getEmail(),"Thông báo về việc đặt hàng","Bạn đã đặt hàng thành công. Mã đơn hàng của bạn là:" + order.getOrder_id());
         FinishOrderResponse response = new FinishOrderResponse(1);
         return ResponseEntity.ok(response);

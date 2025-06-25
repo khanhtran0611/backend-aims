@@ -1,6 +1,6 @@
-package Project_ITSS.ViewProduct2.Service;
+package Project_ITSS.ViewProduct.Service;
 
-import Project_ITSS.ViewProduct2.Repository.UserRepository_ViewProduct;
+import Project_ITSS.ViewProduct.Repository.UserRepository_ViewProduct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

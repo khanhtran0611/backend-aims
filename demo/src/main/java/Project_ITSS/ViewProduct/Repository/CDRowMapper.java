@@ -1,6 +1,6 @@
-package Project_ITSS.ViewProduct2.Repository;
+package Project_ITSS.ViewProduct.Repository;
 
-import Project_ITSS.ViewProduct2.Entity.CD;
+import Project_ITSS.ViewProduct.Entity.CD;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

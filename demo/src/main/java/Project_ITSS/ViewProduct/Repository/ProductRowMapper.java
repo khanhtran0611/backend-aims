@@ -1,10 +1,10 @@
-package Project_ITSS.ViewProduct2.Repository;
+package Project_ITSS.ViewProduct.Repository;
 
 import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import Project_ITSS.ViewProduct2.Entity.Product;
+import Project_ITSS.ViewProduct.Entity.Product;
 
 public class ProductRowMapper implements RowMapper<Product> {
     @Override

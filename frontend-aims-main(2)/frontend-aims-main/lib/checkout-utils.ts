@@ -117,6 +117,7 @@ export async function processCheckout(
       total_after_VAT: checkoutData.total_after_VAT + shippingCalculation.totalShipping,
       total_before_VAT: checkoutData.total_before_VAT + shippingCalculation.totalShipping,
       vat: checkoutData.vat,
+      payment_method: checkoutData.paymentMethod,
       orderLineList: checkoutData.orderLineList,
     }
 
@@ -130,6 +131,7 @@ export async function processCheckout(
 }
 
 export async function VnpayTrigger(amount: number) {
+  
   const response = await api.post("/api/payment",
     {
       amount: amount,

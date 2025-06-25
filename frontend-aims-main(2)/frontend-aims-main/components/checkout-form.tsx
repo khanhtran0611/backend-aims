@@ -29,7 +29,7 @@ export default function CheckoutForm() {
 
   const selectedItems = state.items.filter((item) => item.selected)
   const subtotal = getSelectedTotal()
-  const vat = subtotal * 0.1
+  const vat = Math.round(subtotal * 0.1)
   const total = subtotal + vat
 
   const [isProcessing, setIsProcessing] = useState(false)
@@ -51,7 +51,7 @@ export default function CheckoutForm() {
       instructions: null,
       rush_order_using: false,
     })),
-    paymentMethod: "cod",
+    paymentMethod: "credit_card",
     status: "pending",
     total_after_VAT: total,
     total_before_VAT: subtotal,
@@ -96,7 +96,8 @@ export default function CheckoutForm() {
 
   // Trong render, chỉ sử dụng state
   const finalTotal = total + shippingCalculation.totalShipping
-
+  console.log(total)
+  console.log(shippingCalculation.totalShipping)
   if (selectedItems.length === 0) {
     return (
       <div className="text-center py-16">
@@ -128,6 +129,7 @@ export default function CheckoutForm() {
 
     try {
       const result = await processCheckout(formData, shippingCalculation)
+      console.log(finalTotal)
       let paymentUrl = await VnpayTrigger(finalTotal)
       window.location.href = paymentUrl
       if (result.success) {

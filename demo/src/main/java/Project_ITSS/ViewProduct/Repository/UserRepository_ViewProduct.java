@@ -1,5 +1,6 @@
-package Project_ITSS.ViewProduct2.Repository;
+package Project_ITSS.ViewProduct.Repository;
 
+import Project_ITSS.ViewProduct.Exception.ViewProductException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -10,11 +11,11 @@ public class UserRepository_ViewProduct {
     private JdbcTemplate jdbcTemplate;
 
     public String verifyUserRole(int user_id) {
-        String sql = "SELECT role FROM User WHERE user_id = ?";
-        try {
+        try{
+            String sql = "SELECT role FROM User WHERE user_id = ?";
             return jdbcTemplate.queryForObject(sql, new Object[]{user_id}, String.class);
         } catch (Exception e) {
-            return "NOT OK"; // user_id không tồn tại hoặc lỗi
+            throw new ViewProductException(e.getMessage());
         }
     }
 }

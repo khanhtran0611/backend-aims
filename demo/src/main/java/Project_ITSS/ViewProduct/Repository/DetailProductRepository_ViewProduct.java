@@ -1,6 +1,7 @@
-package Project_ITSS.ViewProduct2.Repository;
+package Project_ITSS.ViewProduct.Repository;
 
-import Project_ITSS.ViewProduct2.Entity.Product;
+import Project_ITSS.ViewProduct.Entity.Product;
+import Project_ITSS.ViewProduct.Exception.ViewProductException;
 import org.springframework.stereotype.Repository;
 
 @Repository

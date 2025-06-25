@@ -2,7 +2,7 @@ package Project_ITSS.CancelOrder.Service;
 
 
 import Project_ITSS.PlaceOrder.Exception.PlaceOrderException;
-import Project_ITSS.PlaceOrder.Repository.ProductRepository_PlaceOrder;
+import Project_ITSS.CancelOrder.Repository.ProductRepository_CancelOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,22 +10,11 @@ import org.springframework.stereotype.Service;
 public class ProductService_CancelOrder {
 
     @Autowired
-    private ProductRepository_PlaceOrder productRepository;
+    private ProductRepository_CancelOrder productRepository;
 
-    public boolean checkProductValidity(int quantity,int product_id){
-        if(quantity <= 0){
-            throw new PlaceOrderException("The quantity of product is invalid");
-        }
-        int available_quantity = productRepository.getProductQuantity(product_id);
-        if (quantity > available_quantity) return false;
-        else return true;
-    }
 
-    public boolean checkProductRush(int product_id){
-        return productRepository.checkRushOrder(product_id);
-    }
-    public boolean checkProducsRush(){
-        return productRepository.checkProductsRush();
+    public void updateProductQuantity(int order_id) {
+        productRepository.updateProductQuantity(order_id);
     }
 
 

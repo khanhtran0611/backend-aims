@@ -2,6 +2,7 @@ package Project_ITSS.PlaceOrder.Repository;
 
 //import Project_ITSS.demo.Entity.Product;
 import Project_ITSS.PlaceOrder.Entity.Product;
+import Project_ITSS.PlaceOrder.Exception.PlaceOrderException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,51 +20,25 @@ public class ProductRepository_PlaceOrder {
         try{
             return jdbcTemplate.queryForObject("SELECT quantity FROM Product WHERE product_id = ?", new Object[]{product_id}, Integer.class);
         }catch (Exception e){
-            e.printStackTrace();
-            return  0;
+            throw new PlaceOrderException(e.getMessage());
         }
-    }
-
-    public int getProductPrice(int product_id){
-        return jdbcTemplate.queryForObject("SELECT price FROM Product WHERE product_id = ?",new Object[]{product_id}, Integer.class);
     }
 
     public double getProductWeight(int product_id){
         return jdbcTemplate.queryForObject("SELECT weight FROM Product WHERE product_id = ?",new Object[]{product_id}, Double.class);
     }
 
-    public Product getProductById(int product_id){
-        String sql = "SELECT * FROM product WHERE product_id = ?";
-        return jdbcTemplate.queryForObject(sql,new Object[]{product_id},new BeanPropertyRowMapper<>(Product.class));
-    }
 
-    public boolean checkRushOrder(int product_id){
-        String sql = "SELECT rush_order_supported FROM product WHERE product_id = $1";
-        return jdbcTemplate.queryForObject(sql,new Object[]{product_id}, Boolean.class);
-    }
-
-    public boolean checkProductsRush(){
-        String sql = """
-        SELECT CASE
-                 WHEN EXISTS (
-                     SELECT 1
-                     FROM product
-                     WHERE rush_order_supported = true
-                 )
-                 THEN true
-                 ELSE false
-               END AS any_rush_order_supported
-        """;
-        return jdbcTemplate.queryForObject(sql, Boolean.class);
-    }
-
-    public String getProductTitleByOrderId(int order_id){
-        String sql = "SELECT p.title FROM Product p JOIN Orderline ol USING(product_id) JOIN \"Order\" o USING(order_id) WHERE o.order_id = ?";
-        return jdbcTemplate.queryForObject(sql,new Object[]{order_id},String.class);
-     }
-
-     public void updateProductQuantity(int product_id, int quantity){
-        String sql = "UPDATE Product SET quantity = quantity - ? WHERE product_id = ?";
-        jdbcTemplate.update(sql, quantity, product_id);
+     public void updateProductQuantity(int order_id){
+        try{
+        String sql = "UPDATE Product p\n" +
+                     "SET quantity = p.quantity - ol.quantity\n" +
+                     "FROM Orderline ol\n" +
+                     "WHERE p.product_id = ol.product_id\n" +
+                     "  AND ol.order_id = ?";
+        jdbcTemplate.update(sql, order_id);
+        }catch (Exception e){
+            throw new PlaceOrderException(e.getMessage());
+        }
     }
 }

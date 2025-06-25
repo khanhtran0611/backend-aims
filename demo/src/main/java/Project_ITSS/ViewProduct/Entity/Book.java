@@ -1,4 +1,4 @@
-package Project_ITSS.ViewProduct2.Entity;
+package Project_ITSS.ViewProduct.Entity;
 
 
 import lombok.Getter;

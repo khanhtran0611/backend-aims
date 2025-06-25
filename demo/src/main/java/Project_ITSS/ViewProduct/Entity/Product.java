@@ -1,4 +1,4 @@
-package Project_ITSS.ViewProduct2.Entity;
+package Project_ITSS.ViewProduct.Entity;
 
 import Project_ITSS.AddProduct.Entity.Book;
 import Project_ITSS.AddProduct.Entity.CD;

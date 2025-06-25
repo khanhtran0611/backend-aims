@@ -29,17 +29,4 @@ public class Cart {
      }
 
 
-//    public boolean checkTheValidity(){
-//         for(CartItem Cartproduct  : listofProducts){
-//             Product product = Cartproduct.getProduct();
-//             int quantity = Cartproduct.getQuantity();
-//             if(!product.checkProductValidity(quantity,product.getProduct_id())){
-//                 return false;
-//             }
-//
-//         }
-//         return true;
-//     }
-
-
 }

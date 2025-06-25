@@ -42,7 +42,7 @@ export interface CheckoutFormData {
     instructions: string | null
     rush_order_using: boolean
   }>
-  paymentMethod: "cod" | "momo" | "vnpay"
+  paymentMethod: "cod" | "momo" | "credit_card"
   // Order totals for backend
   status: "pending"
   total_after_VAT: number

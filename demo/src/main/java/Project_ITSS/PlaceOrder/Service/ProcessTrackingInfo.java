@@ -34,7 +34,7 @@ public class ProcessTrackingInfo {
         String address = deliveryInfoRepository.getCustomerAddress(order_id);
         json.put("payment_method",order.getPayment_method());
         json.put("delivery_address",address);
-        List<ProductItem> orderlines = orderlineRepository.getOrderlineByOrderId(order_id);
+        List<ProductItem> orderlines = orderlineRepository.getProductItemByOrderId(order_id);
         json.put("items",orderlines);
         orderTrackingInfo.setOrder_details(json);
         return orderTrackingInfo;

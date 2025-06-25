@@ -42,7 +42,11 @@ public class OrderService {
     public void saveTransactionInfo(String orderId, Map<String, String> fields) {
         try {
             TransactionInfo transaction = new TransactionInfo();
-            transaction.setOrderId(orderId);
+            
+            // Convert orderId from String to Integer and back to String
+            Integer orderIdInt = Integer.parseInt(orderId);
+            String convertedOrderId = String.valueOf(orderIdInt);
+            transaction.setOrderId(convertedOrderId);
             transaction.setTransactionNo(fields.get("vnp_TransactionNo"));
             transaction.setAmount(Long.parseLong(fields.getOrDefault("vnp_Amount", "0")) / 100);
             transaction.setBankCode(fields.get("vnp_BankCode"));

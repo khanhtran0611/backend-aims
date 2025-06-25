@@ -6,6 +6,8 @@ import Project_ITSS.CancelOrder.Service.OrderCancellationService;
 import Project_ITSS.CancelOrder.Command.CommandResult;
 import Project_ITSS.CancelOrder.Exception.OrderNotFoundException;
 import Project_ITSS.CancelOrder.Exception.OrderCancellationException;
+import Project_ITSS.CancelOrder.Service.OrderService_CancelOrder;
+import Project_ITSS.CancelOrder.Service.ProductService_CancelOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +34,9 @@ public class CancelOrderController {
     private final OrderCancellationService cancellationService;
 
     @Autowired
-    private OrderRepository_CancelOrder orderRepository;
+    private OrderService_CancelOrder orderService;
+    @Autowired
+    private ProductService_CancelOrder productService;
     
     @Autowired
     public CancelOrderController(OrderCancellationService cancellationService) {
@@ -74,10 +78,10 @@ public class CancelOrderController {
     }
 
     @PostMapping("/approve")
-    public Map<String, Object> approveOrder(@RequestParam("order_id") long orderId) {
+    public Map<String, Object> approveOrder(@RequestParam("order_id") int orderId) {
         Map<String, Object> json = new HashMap<>();
         try {
-            Order order = orderRepository.getOrderById(orderId);
+            Order order = orderService.getOrderById(orderId);
             if (order == null) {
                 json.put("status",0);
                 json.put("message","Order not found");
@@ -88,7 +92,8 @@ public class CancelOrderController {
                 json.put("message","Order status must be 'pending' to approve. Current status: " + order.getStatus());
                 return json;
             }
-            orderRepository.updateOrderStatusToApprove(orderId);
+            orderService.updateOrderStatusToApprove(orderId);
+            productService.updateProductQuantity(orderId);
             json.put("status",1);
             json.put("message","Order " + orderId + " has been approved.");
             return json;
