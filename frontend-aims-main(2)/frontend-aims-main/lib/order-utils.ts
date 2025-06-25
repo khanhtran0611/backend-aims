@@ -20,59 +20,7 @@ export async function getOrderDetails(orderId: number): Promise<{
       let delivery = getDeliveryFromLocalStorage()
       let orderLines = order.orderLineList
       order.order_id = orderId
-    // Mock data
-    // const order: Order = {
-    //   order_id: orderId,
-    //   delivery_id: 1000 + orderId,
-    //   total_before_vat: order.total_before_vat,
-    //   total_after_vat:  order.total_after_vat,
-    //   status: "pending",
-    //   vat: 150000,
-    // }
 
-    //  const delivery: DeliveryInformation = {
-    //   delivery_id: 1000 + orderId,
-    //   name: "Nguyen Van A",
-    //   phone: "0912345678",
-    //   email: "nguyenvana@example.com",
-    //   address: "123 Nguyen Hue Street, District 1",
-    //   province: "TP Hồ Chí Minh",
-    //   shipping_fee: 22000,
-    // }
-
-    // const orderLines = [
-    //   {
-    //     odline_id: 5001,
-    //     order_id: orderId,
-    //     product_id: 1,
-    //     status: "pending",
-    //     quantity: 1,
-    //     total_fee: 500000,
-    //     rush_order_using: false,
-    //     product: {
-    //       product_id: 1,
-    //       title: "Product 1",
-    //       type: "book",
-    //       price: 500000,
-    //     },
-    //   },
-    //   {
-    //     odline_id: 5002,
-    //     order_id: orderId,
-    //     product_id: 2,
-    //     status: "pending",
-    //     quantity: 2,
-    //     total_fee: 1000000,
-    //     rush_order_using: true,
-    //     delivery_time: "14:00 - 16:00",
-    //     product: {
-    //       product_id: 2,
-    //       title: "Product 2",
-    //       type: "dvd",
-    //       price: 500000,
-    //     },
-    //   },
-    // ]
 
     const transaction: Transaction = {
       transaction_id: 3000 + orderId,

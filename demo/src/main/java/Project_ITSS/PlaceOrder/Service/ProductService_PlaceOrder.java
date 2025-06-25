@@ -21,12 +21,7 @@ public class ProductService_PlaceOrder {
         else return true;
     }
 
-    public boolean checkProductRush(int product_id){
-        return productRepository.checkRushOrder(product_id);
+    public void updateProductQuantity(int product_id, int quantity) {
+        productRepository.updateProductQuantity(product_id, quantity);
     }
-    public boolean checkProducsRush(){
-        return productRepository.checkProductsRush();
-    }
-
-
 }

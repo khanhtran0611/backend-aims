@@ -1,4 +1,4 @@
-package Project_ITSS.PlaceOrder.Service;
+package Project_ITSS.CancelOrder.Service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -23,7 +23,7 @@ enum PaymentMethod{
 
 
 @Service
-public class NonDBService_PlaceOrder {
+public class EmailNotification_CancelOrder {
     @Autowired
     private JavaMailSender javaMailSender;
     public void sendSuccessNotification(String customer, String message) {

@@ -17,11 +17,12 @@ public class Order {
     private int Total_before_VAT;
     private int Total_after_VAT;
     private String status;
-    private Long delivery_id;
+    private int delivery_id;
     private final int VAT = 10;
     private String order_time;
     private String payment_method;
     List<Orderline> orderlineList = new ArrayList<>();
+
 
 
     public void createOrder(Cart cart){

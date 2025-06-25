@@ -2,8 +2,7 @@ package Project_ITSS.PlaceOrder.Repository;
 
 import Project_ITSS.PlaceOrder.Entity.DeliveryInformation;
 import Project_ITSS.PlaceOrder.Entity.Order;
-import Project_ITSS.PlaceOrder.Entity.OrderInfo;
-import Project_ITSS.PlaceOrder.Entity.Orderline;
+import Project_ITSS.PlaceOrder.DTO.OrderInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,21 +15,7 @@ public class OrderRepository_PlaceOrder {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public void saveOrder(Order order, DeliveryInformation dI){
-        // Insert vào DeliveryInformation và lấy delivery_id vừa tạo
-        String sqlDelivery = "INSERT INTO DeliveryInformation (Name, Phone, Email, Address, Province, Shipping_message, shipping_fee) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING delivery_id";
-        Long deliveryId = jdbcTemplate.queryForObject(sqlDelivery, new Object[]{
-            dI.getName(),
-            dI.getPhone(),
-            dI.getEmail(),
-            dI.getAddress(),
-            dI.getProvince(),
-            dI.getDelivery_message(),
-            dI.getDelivery_fee()
-        }, Long.class);
-
-        order.setDelivery_id(deliveryId);
-
+    public void saveOrder(Order order){
         // Insert vào Order, có delivery_id
         jdbcTemplate.update("INSERT INTO \"Order\" (order_id, delivery_id, Total_before_VAT, Total_after_VAT, status, VAT, order_time, payment_method) VALUES (?,?,?,?,?,?,CURRENT_DATE,\'credit_card\')",
             order.getOrder_id(),

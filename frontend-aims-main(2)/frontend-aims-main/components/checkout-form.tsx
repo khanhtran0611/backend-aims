@@ -46,7 +46,7 @@ export default function CheckoutForm() {
       product_id: item.product.product_id,
       status: "pending" as const,
       quantity: item.quantity,
-      total_Fee: item.product.price * item.quantity,
+      total_fee: item.product.price * item.quantity,
       delivery_time: null,
       instructions: null,
       rush_order_using: false,

@@ -1,46 +1,40 @@
 package Project_ITSS.UpdateProduct.Repository;
 
-
 import Project_ITSS.UpdateProduct.Entity.CD;
 import Project_ITSS.UpdateProduct.Entity.Product;
+import Project_ITSS.UpdateProduct.Exception.ProductUpdatePersistenceException;
+import Project_ITSS.UpdateProduct.config.SqlQueries;
+import Project_ITSS.UpdateProduct.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-
 @Repository
-public class CDRepository_UpdateProduct implements  DetailProductRepository_UpdateProduct{
+public class CDRepository_UpdateProduct implements DetailProductRepository_UpdateProduct {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public void updateProductInfo(Product product){
-        CD cd = (CD)product;
-        String importDateStr = cd.getRelease_date(); // ví dụ "2023-05-30"
-        LocalDate localDate = LocalDate.parse(importDateStr);
-        java.sql.Date sqlDate = java.sql.Date.valueOf(localDate);
-        jdbcTemplate.update(    "UPDATE CD " +                      // ← dấu cách sau CD
-                        "SET " +                            // ← dấu cách sau SET
-                        "Product_id = ?, " +
-                        "Track_List = ?, " +
-                        "genre = ?, " +
-                        "record_label = ?, " +
-                        "artists = ?, " +
-                        "release_date = ? " +               // ← dấu cách ở cuối dòng này
-                        "WHERE CD_id = ?;",
-                cd.getProduct_id(),
+    public void updateProductInfo(Product product) {
+        try {
+            CD cd = (CD) product;
+            java.sql.Date sqlDate = DateUtils.parseStringToSqlDate(cd.getRelease_date());
+            
+            jdbcTemplate.update(
+                SqlQueries.UPDATE_CD,
                 cd.getTrack_list(),
                 cd.getGenre(),
                 cd.getRecord_label(),
                 cd.getArtists(),
                 sqlDate,
-                cd.getCD_id());
+                cd.getProduct_id()
+            );
+        } catch (Exception e) {
+            throw new ProductUpdatePersistenceException("Failed to update CD information", e);
+        }
     }
 
     @Override
     public String getType() {
         return "cd";
     }
-
-
 }

@@ -1,56 +1,34 @@
 package Project_ITSS.PlaceOrder.Controller;
 
-import Project_ITSS.PlaceOrder.Entity.*;
-import Project_ITSS.PlaceOrder.Service.NonDBService_PlaceOrder;
+import Project_ITSS.PlaceOrder.Service.EmailNotification_PlaceOrder;
 import Project_ITSS.PlaceOrder.Service.OrderService_PlaceOrder;
 import Project_ITSS.PlaceOrder.Service.ProductService_PlaceOrder;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-
-@Setter
-@Getter
-class FeeInfoDTO {
-    @JsonProperty("province")
-    private String province;
-    
-    @JsonProperty("order")
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    private Order order;
-}
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
 public class RushOrderController {
 
     @Autowired
-    private NonDBService_PlaceOrder nonDBService;
+    private EmailNotification_PlaceOrder nonDBService;
     @Autowired
     private OrderService_PlaceOrder orderService;
     @Autowired
     private ProductService_PlaceOrder productService;
 
 
-    @GetMapping("/rush_check/product/{id}")
-    public boolean check_rush_order_product(@PathVariable("id") int product_id){
-        return productService.checkProductRush(product_id);
-    }
-
-    @GetMapping("/rush_check/products")
-    public boolean check_rush_order_products(){
-        return productService.checkProducsRush();
-    }
+//    @GetMapping("/rush_check/product/{id}")
+//    public boolean check_rush_order_product(@PathVariable("id") int product_id){
+//        return productService.checkProductRush(product_id);
+//    }
+//
+//    @GetMapping("/rush_check/products")
+//    public boolean check_rush_order_products(){
+//        return productService.checkProductsRush();
+//    }
     // 2. Kiểm tra tính hợp lệ điểm đến
 //    @PostMapping("/check-validity")
 //    @ResponseBody
@@ -107,4 +85,57 @@ public class RushOrderController {
         model.addAttribute("error", "Rush order delivery is not eligible for this destination.");
         return "rush-delivery-form";
     }
+    
+//    @PostMapping("/upload-image")
+//    public Map<String, Object> uploadImage(@RequestParam("file") MultipartFile file) {
+//        Map<String, Object> json = new HashMap<>();
+       
+//        try {
+//            // Kiểm tra file có tồn tại không
+//            if (file.isEmpty()) {
+//                json.put("status", 0);
+//                json.put("message", "Please select a file to upload");
+//                return json;
+//            }
+           
+//            // Kiểm tra loại file (chỉ cho phép ảnh)
+//            String contentType = file.getContentType();
+//            if (contentType == null || !contentType.startsWith("image/")) {
+//                json.put("status", 0);
+//                json.put("message", "Only image files are allowed");
+//                return json;
+//            }
+           
+//            // Tạo thư mục lưu trữ nếu chưa tồn tại
+//            String uploadDir = "D:\\frontend-aims-main(5)\\frontend-aims-main(2)\\frontend-aims-main(2)\\frontend-aims-main\\public";
+//            File directory = new File(uploadDir);
+//            if (!directory.exists()) {
+//                directory.mkdirs();
+//            }
+           
+//            // Tạo tên file unique để tránh trùng lặp
+//            String originalFilename = file.getOriginalFilename();
+//            String fileExtension = "";
+//            if (originalFilename != null && originalFilename.contains(".")) {
+//                fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+//            }
+//            String filename = UUID.randomUUID().toString() + fileExtension;
+           
+//            // Lưu file
+//            Path filePath = Paths.get(uploadDir + filename);
+//            Files.copy(file.getInputStream(), filePath);
+           
+//            json.put("status", 1);
+//            json.put("message", "File uploaded successfully");
+//            json.put("filename", filename);
+//            json.put("filepath", filePath.toString());
+           
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            json.put("status", 0);
+//            json.put("message", "Failed to upload file: " + e.getMessage());
+//        }
+       
+//        return json;
+//    }
 } 

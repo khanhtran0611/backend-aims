@@ -28,8 +28,8 @@ export default function OrderTracking() {
   const handleFindOrder = async () => {
     if (!orderId.trim() || !/^\d+$/.test(orderId.trim())) {
       toast({
-        title: "Order ID không hợp lệ",
-        description: "Vui lòng nhập một Order ID chỉ chứa số.",
+        title: "Invalid Order ID",
+        description: "Please enter a valid Order ID containing only numbers.",
         variant: "destructive",
       })
       return
@@ -50,8 +50,8 @@ export default function OrderTracking() {
     let order = response.order
     setOrderInfo(order)
     toast({
-      title: "Đã tìm thấy đơn hàng",
-      description: `Đã tải thông tin cho đơn hàng #${order.order_id}. Bạn có thể tiến hành hủy.`,
+      title: "Order found",
+      description: `Order #${order.order_id} details loaded. You can proceed to cancel.`,
     })
     setIsLoading(false)
   }
@@ -81,7 +81,7 @@ export default function OrderTracking() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Search className="h-5 w-5" />
-            Nhập Order ID để hủy
+            Enter Order ID
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -89,14 +89,14 @@ export default function OrderTracking() {
             <div className="flex gap-2 mt-1">
               <Input
                 id="order-id"
-                placeholder="Ví dụ: 10001"
+                placeholder="Example: 10001"
                 value={orderId}
                 onChange={(e) => setOrderId(e.target.value)}
                 onKeyPress={handleKeyPress}
                 className="flex-1"
               />
               <Button onClick={handleFindOrder} disabled={isLoading}>
-                {isLoading ? "Đang tìm..." : "Tìm đơn hàng"}
+                {isLoading ? "Searching..." : "Find order"}
               </Button>
             </div>
           </div>
@@ -231,13 +231,13 @@ export default function OrderTracking() {
           {orderInfo.current_status === "pending" && (
             <div className="text-center mb-8">
               <Button variant="destructive" onClick={() => setShowCancellation(true)}>
-                Hủy đơn hàng này
+                Cancel this order
               </Button>
             </div>
           )}
           {orderInfo.current_status === "cancelled" && (
             <div className="text-center p-4 bg-green-100 text-green-800 rounded-md">
-              Đơn hàng này đã được hủy.
+              This order has been cancelled.
             </div>
           )}
         </div>

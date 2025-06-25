@@ -61,4 +61,9 @@ public class ProductRepository_PlaceOrder {
         String sql = "SELECT p.title FROM Product p JOIN Orderline ol USING(product_id) JOIN \"Order\" o USING(order_id) WHERE o.order_id = ?";
         return jdbcTemplate.queryForObject(sql,new Object[]{order_id},String.class);
      }
+
+     public void updateProductQuantity(int product_id, int quantity){
+        String sql = "UPDATE Product SET quantity = quantity - ? WHERE product_id = ?";
+        jdbcTemplate.update(sql, quantity, product_id);
+    }
 }

@@ -186,7 +186,7 @@ export default function ProductForm({ product, onSave, onClose }: ProductFormPro
       })
       return
     }
-
+   
     if (file.size > 5 * 1024 * 1024) {
       toast({
         title: "File too large",
@@ -201,7 +201,7 @@ export default function ProductForm({ product, onSave, onClose }: ProductFormPro
     reader.onload = (e) => {
       const result = e.target?.result as string
       setUploadedImage(result)
-      updateField("image_url", result)
+      updateField("image_url", '/' + file.name)
     }
     reader.readAsDataURL(file)
   }

@@ -21,14 +21,14 @@ export interface Book extends Product {
   publication_date: string
   authors: string
   publishers: string
-  cover_type: string
+  cover_type: "Hardcover" | "Paperback"
 }
 
 // DVD specific interface
 export interface DVD extends Product {
   dvd_id: number
   release_date: string
-  dvd_type: string
+  dvd_type: "Blu-ray" | "Standard DVD"
   genre: string
   studio: string
   director: string

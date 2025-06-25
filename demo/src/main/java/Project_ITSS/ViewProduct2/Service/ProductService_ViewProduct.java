@@ -20,9 +20,13 @@ public class ProductService_ViewProduct {
     @Autowired
     public ProductService_ViewProduct(List<DetailProductRepository_ViewProduct> repositories){
         repositoryMap = new HashMap<>();
+        System.out.println("Found " + repositories.size() + " repositories");
         for(DetailProductRepository_ViewProduct repo : repositories){
-            repositoryMap.put(repo.getType(),repo);
+            String type = repo.getType();
+            System.out.println("Adding repository for type: " + type);
+            repositoryMap.put(type, repo);
         }
+        System.out.println("Repository map contains: " + repositoryMap.keySet());
     }
 
     public boolean checkProductValidity(int quantity,int product_id){
@@ -36,7 +40,9 @@ public class ProductService_ViewProduct {
     }
 
     public Product getFullProductDetail(int id,String type) {
+        System.out.println("Looking for repository with type: '" + type + "'");
         DetailProductRepository_ViewProduct repo = repositoryMap.get(type);
+
         return repo.getProductDetailInfo(id);
     }
 

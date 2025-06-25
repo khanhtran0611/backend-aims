@@ -1,8 +1,8 @@
 package Project_ITSS.PlaceOrder.Repository;
 
 import Project_ITSS.PlaceOrder.Entity.Orderline;
-import Project_ITSS.PlaceOrder.Entity.Product;
-import Project_ITSS.PlaceOrder.Entity.ProductItem;
+import Project_ITSS.PlaceOrder.DTO.ProductItem;
+import Project_ITSS.PlaceOrder.Repository.mapper.ProductItemRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -18,21 +18,6 @@ public class OrderlineRepository_PlaceOrder {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    // ProductItem RowMapper
-    private static class ProductItemRowMapper implements RowMapper<ProductItem> {
-        @Override
-        public ProductItem mapRow(ResultSet rs, int rowNum) throws SQLException {
-            ProductItem productItem = new ProductItem();
-            
-            productItem.setProduct_id(rs.getInt("product_id"));
-            productItem.setTitle(rs.getString("title"));
-            productItem.setPrice(rs.getInt("price"));
-            productItem.setQuantity(rs.getInt("quantity"));
-            productItem.setRush_order_using(rs.getBoolean("rush_order_using"));
-            
-            return productItem;
-        }
-    }
 
     public Orderline getOrderlinebyId(int odrline_id){
         String sql = "SELECT * FROM OrderLines WHERE odrline_id = ?";
@@ -67,9 +52,15 @@ public class OrderlineRepository_PlaceOrder {
     }
 
     public List<ProductItem> getOrderlineByOrderId(int order_id){
+        try{
         String sql = "SELECT ol.*,p.title,p.price FROM Product p JOIN Orderline ol USING(product_id) JOIN \"Order\" o USING(order_id) WHERE o.order_id = ?";
         return jdbcTemplate.query(sql, new Object[]{order_id}, new ProductItemRowMapper());
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
+
 
 
 }

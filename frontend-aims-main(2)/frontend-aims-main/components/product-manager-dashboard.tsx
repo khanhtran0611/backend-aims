@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { formatCurrency, fetchProductById, editProduct, addProduct } from "@/lib/utils"
+import { formatCurrency, fetchProductById, editProduct, addProduct, checkUpdateProductAvailable, checkAddProductAvailable } from "@/lib/utils"
 import { Plus, Edit, Package, Eye } from "lucide-react"
 import type { Product, Book, DVD, CD } from "@/lib/types"
 import ProductForm from "@/components/product-form"
@@ -83,6 +83,15 @@ export default function ProductManagerDashboard() {
   const handleProductSaved = async (savedProduct: Product | Book | DVD | CD) => {
     if (editingProduct) {
       // Update existing product
+      const response = await checkUpdateProductAvailable()
+      if (!response) {
+        toast({
+          title: "Error",
+          description: "Updating product is currently unavailable",
+          variant: "destructive",
+        })
+        return
+      }
       await editProduct(savedProduct)
       setProducts((prev) => prev.map((p) => (p.product_id === savedProduct.product_id ? savedProduct : p)))
       toast({
@@ -91,6 +100,15 @@ export default function ProductManagerDashboard() {
       })
     } else {
       // Add new product
+      const response = await checkAddProductAvailable()
+      if (!response) {
+        toast({
+          title: "Error",
+          description: "Adding product is currently unavailable",
+          variant: "destructive",
+        })
+        return
+      }
       const repsonse = await addProduct(savedProduct)
       savedProduct.product_id = repsonse.product_id
       setProducts((prev) => [savedProduct, ...prev])

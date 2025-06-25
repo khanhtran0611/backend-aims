@@ -12,38 +12,14 @@ export async function getOrderTracking(trackingCode: string): Promise<OrderTrack
 // Real API function to cancel order - integrated with Java Spring backend
 export async function cancelOrder(
   cancellationRequest: Pick<CancellationRequest, "order_id" | "tracking_code">,
-): Promise<{
-  success: boolean
-  message: string
-  refund_amount?: number
-  refund_method?: string
-  updated_status?: string
-  vnp_ResponseCode?: string
-  vnp_Message?: string
-}> {
+) {
   try {
     // Call the real backend API
     const response = await api.post(`/api/order/cancel?order_id=${cancellationRequest.order_id}`, {})
 
     // Check if the response indicates success
-    if (response && response.vnp_ResponseCode === "00") {
-      return {
-        success: true,
-        message: "Đơn hàng đã được hủy thành công. Hoàn tiền sẽ được xử lý trong 3-5 ngày làm việc.",
-        updated_status: "cancelled",
-        vnp_ResponseCode: response.vnp_ResponseCode,
-        vnp_Message: response.vnp_Message,
-        refund_amount: response.vnp_Amount ? parseInt(response.vnp_Amount) / 100 : undefined, // VNPay amount is in VND * 100
-        refund_method: "VNPay Refund"
-      }
-    } else {
-      return {
-        success: false,
-        message: response.vnp_Message || "Không thể hủy đơn hàng. Vui lòng thử lại sau.",
-        vnp_ResponseCode: response.vnp_ResponseCode,
-        vnp_Message: response.vnp_Message
-      }
-    }
+    return response
+    
   } catch (error: any) {
     console.error("Error cancelling order:", error)
 

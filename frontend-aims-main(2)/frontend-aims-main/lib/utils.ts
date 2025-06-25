@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
-import { api } from "./api"
+import { api, fileApi } from "./api"
 import { type } from "os"
 
 export function cn(...inputs: ClassValue[]) {
@@ -44,6 +44,7 @@ export async function fetchProducts(
 export async function fetchProductById(id: number, type: string): Promise<Product | Book | DVD | CD | null> {
   // Simulate API delay
   await new Promise((resolve) => setTimeout(resolve, 500))
+  console.log(type)
   let response = await api.get(`/product/all-detail/${id}?type=${type}`);
   // Get base product data
   return response as Product | Book | DVD | CD | null;
@@ -67,6 +68,22 @@ export async function addProduct(product: any) {
   return response;
 }
 
+export async function checkAddProductAvailable() {
+  // This API checks if adding a product is currently available
+  return await api.get("/adding/available")
+}
+
+export async function checkUpdateProductAvailable() {
+  // This API checks if updating a product is currently available
+  return await api.get("/updating/available")
+}
+
+export async function uploadImage(file: File) {
+  // This API uploads an image to the backend for processing and saving
+  const formData = new FormData()
+  formData.append('image', file)
+  return await fileApi.post("/upload-image", formData)
+}
 
 export type Product = {
   product_id: number

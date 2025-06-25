@@ -1,4 +1,4 @@
-package Project_ITSS.PlaceOrder.Entity;
+package Project_ITSS.PlaceOrder.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
