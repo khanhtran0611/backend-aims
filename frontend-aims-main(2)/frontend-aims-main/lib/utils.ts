@@ -16,6 +16,8 @@ export function formatCurrency(price: number): string {
   }).format(price)
 }
 
+
+
 // Mock data function to simulate fetching products
 export async function fetchProducts(
   page = 1,
@@ -84,6 +86,13 @@ export async function uploadImage(file: File) {
   formData.append('image', file)
   return await fileApi.post("/upload-image", formData)
 }
+
+// API to delete an image, sending filename as request param
+export async function deleteImage(filename: string) {
+  return await api.post(`/delete-image?image=${encodeURIComponent(filename)}`, {})
+}
+
+
 
 export type Product = {
   product_id: number

@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FinishOrderResponse {
     private int status;
+    private String message;
 } 

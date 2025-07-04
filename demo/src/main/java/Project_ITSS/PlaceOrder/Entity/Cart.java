@@ -24,9 +24,9 @@ public class Cart {
          return listofProducts;
      }
 
-     public void EmptyCart(){
-         listofProducts = new ArrayList<CartItem>();
-     }
+    //  public void EmptyCart(){
+    //      listofProducts = new ArrayList<CartItem>();
+    //  }
 
 
 }

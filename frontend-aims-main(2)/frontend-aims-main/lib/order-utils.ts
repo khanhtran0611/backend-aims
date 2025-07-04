@@ -2,6 +2,7 @@ import type { Transaction, Invoice } from "./order-types"
 import type { Order, DeliveryInformation, Order_server } from "./checkout-types"
 import { api } from "./api"
 import { CartItem } from "./cart-context"
+import { getOrderlineList } from "./checkout-utils"
 
 // Mock function to get order details
 export async function getOrderDetails(orderId: number): Promise<{
@@ -18,7 +19,7 @@ export async function getOrderDetails(orderId: number): Promise<{
   try {
       let order = getOrderFromLocalStorage()
       let delivery = getDeliveryFromLocalStorage()
-      let orderLines = order.orderLineList
+      let orderLines = getOrderlineList()
       order.order_id = orderId
 
 
@@ -27,7 +28,7 @@ export async function getOrderDetails(orderId: number): Promise<{
       transaction_datetime: new Date().toISOString(),
       transaction_content: "Payment for order #" + orderId,
       amount: order.total_after_VAT, // Total after VAT + shipping
-      payment_method: "credit_card",
+      payment_method: order.payment_method,
     }
 
 
@@ -62,8 +63,8 @@ export function formatPaymentMethod(method: string): string {
       return "Cash on Delivery (COD)"
     case "momo":
       return "MoMo E-Wallet"
-    case "vnpay":
-      return "VNPay"
+    case "credit_card":
+      return "Credit Card"
     default:
       return method
   }
@@ -86,7 +87,7 @@ export async function createOrder(cartItems: Omit<CartItem, "selected">[]) {
     listofProducts: cartItems
   }
   const response = await api.post("/placeorder", cart)
-  return response.order
+  return response
 }
 
 

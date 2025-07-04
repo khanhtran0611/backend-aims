@@ -11,4 +11,5 @@ public class RecalculateResponse {
     private int regularShipping;
     private int rushShipping;
     private int totalShipping;
+    private String message;
 } 

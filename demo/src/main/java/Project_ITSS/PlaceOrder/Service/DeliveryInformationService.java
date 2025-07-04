@@ -13,4 +13,16 @@ public class DeliveryInformationService {
     public int saveDeliveryInfo(DeliveryInformation deliveryInformation) {
         return deliveryInformationRepo.saveDeliveryInfo(deliveryInformation);
     }
+
+    public DeliveryInformation createDeliveryInfo(String name, String phone, String email, String address, String province, String delivery_message,int delivery_fee){
+        DeliveryInformation deliveryInformation = new DeliveryInformation();
+        deliveryInformation.setName(name);
+        deliveryInformation.setPhone(phone);
+        deliveryInformation.setEmail(email);
+        deliveryInformation.setAddress(address);
+        deliveryInformation.setProvince(province);
+        deliveryInformation.setDelivery_message(delivery_message);
+        deliveryInformation.setDelivery_fee(delivery_fee);
+        return deliveryInformation;
+    }
 } 

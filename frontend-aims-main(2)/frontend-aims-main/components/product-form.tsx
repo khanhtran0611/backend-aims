@@ -23,6 +23,7 @@ import type { Product, Book, DVD, CD } from "@/lib/types"
 import { useToast } from "@/hooks/use-toast"
 import { Upload, X, ImageIcon } from "lucide-react"
 import Image from "next/image"
+import { uploadImage, deleteImage } from "@/lib/utils"
 
 interface ProductFormProps {
   product?: Product | Book | DVD | CD | null
@@ -95,6 +96,9 @@ export default function ProductForm({ product, onSave, onClose }: ProductFormPro
     release_date: (product as CD)?.release_date || "",
   })
 
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [originalImageUrl, setOriginalImageUrl] = useState(product?.image_url || "")
+
   // Update form data when product prop changes
   useEffect(() => {
     if (product) {
@@ -139,6 +143,7 @@ export default function ProductForm({ product, onSave, onClose }: ProductFormPro
           release_date: cdProduct.release_date || "",
         })
       }
+      setOriginalImageUrl(product.image_url || "")
     }
   }, [product])
 
@@ -186,7 +191,7 @@ export default function ProductForm({ product, onSave, onClose }: ProductFormPro
       })
       return
     }
-   
+
     if (file.size > 5 * 1024 * 1024) {
       toast({
         title: "File too large",
@@ -202,6 +207,7 @@ export default function ProductForm({ product, onSave, onClose }: ProductFormPro
       const result = e.target?.result as string
       setUploadedImage(result)
       updateField("image_url", '/' + file.name)
+      setSelectedFile(file)
     }
     reader.readAsDataURL(file)
   }
@@ -209,6 +215,7 @@ export default function ProductForm({ product, onSave, onClose }: ProductFormPro
   const removeImage = () => {
     setUploadedImage(null)
     updateField("image_url", "")
+    setSelectedFile(null)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -254,8 +261,17 @@ export default function ProductForm({ product, onSave, onClose }: ProductFormPro
     setIsLoading(true)
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      // Xử lý upload/xóa ảnh nếu cần
+      // Nếu ảnh cũ bị xóa
+      if (originalImageUrl && !formData.image_url) {
+        // Chỉ xóa nếu có ảnh cũ và giờ đã xóa
+        const fileName = originalImageUrl.replace(/^\//, "")
+        await deleteImage(fileName)
+      }
+      // Nếu có ảnh mới (khác ảnh cũ)
+      if (selectedFile && ('/' + selectedFile.name !== originalImageUrl)) {
+        await uploadImage(selectedFile)
+      }
 
       const baseProduct = {
         product_id: product?.product_id || Date.now(),

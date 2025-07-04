@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DeliveryInfoResponse {
     private DeliveryInformation delivery_information;
+    private String message;
 } 

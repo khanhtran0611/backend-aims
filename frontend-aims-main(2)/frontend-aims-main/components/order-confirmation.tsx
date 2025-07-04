@@ -13,6 +13,7 @@ import { CheckCircle, Package, Truck, FileText, Clock, MapPin, Phone, Mail, User
 import { useCart } from "@/lib/cart-context"
 
 
+
 interface OrderConfirmationProps {
   orderId: number
 }
@@ -33,6 +34,7 @@ export default function OrderConfirmation({ orderId }: OrderConfirmationProps) {
       isFetching = true
       try {
         const details = await getOrderDetails(orderId)
+        console.log(details)
         if (isMounted) {
           setOrderDetails(details)
         }
@@ -138,14 +140,14 @@ export default function OrderConfirmation({ orderId }: OrderConfirmationProps) {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4 text-sm">
-              <div>
+              {/* <div>
                 <span className="font-medium">Invoice ID:</span>
                 <div className="text-muted-foreground">#{invoice.invoice_id}</div>
               </div>
               <div>
                 <span className="font-medium">Transaction ID:</span>
                 <div className="text-muted-foreground">#{transaction.transaction_id}</div>
-              </div>
+              </div> */}
               <div>
                 <span className="font-medium">Amount:</span>
                 <div className="font-semibold">{formatCurrency(transaction.amount)}</div>
@@ -230,13 +232,14 @@ export default function OrderConfirmation({ orderId }: OrderConfirmationProps) {
       {/* Order Items */}
       <Card className="mb-8">
         <CardHeader>
-          {/* <CardTitle>Order Items</CardTitle> */}
-          <CardTitle>Detail Amount</CardTitle>
+          <CardTitle>Order Items</CardTitle>
+          {/* <CardTitle>Total Amount</CardTitle> */}
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {/* {orderLines.map((line: any) => (
-              <div key={line.odline_id} className="flex justify-between items-center py-2">
+          <Separator />
+            {orderLines.map((line: any) => (
+              <div key={line.product_id} className="flex justify-between items-center py-2">
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <span className="font-medium">{line.product_id}</span>
@@ -248,15 +251,15 @@ export default function OrderConfirmation({ orderId }: OrderConfirmationProps) {
                     )}
                   </div>
                   <div className="text-sm text-muted-foreground">
-                    {line.product_id}
+                    {line.title}
                   </div>
                   {line.rush_order_using && line.delivery_time && (
                     <div className="text-xs text-orange-600 mt-1">Delivery time: {line.delivery_time}</div>
                   )}
                 </div>
-                <div className="font-semibold">{formatCurrency(line.total_Fee)}</div>
+                <div className="font-semibold">{formatCurrency(line.total_fee)}</div>
               </div>
-            ))} */}
+            ))}
 
             <Separator />
 
@@ -295,12 +298,7 @@ export default function OrderConfirmation({ orderId }: OrderConfirmationProps) {
               Continue Shopping
             </Button>
           </Link>
-          <Link href={`/orders/${order.order_id}`}>
-            <Button className="flex items-center gap-2">
-              <Package className="h-4 w-4" />
-              Track Order
-            </Button>
-          </Link>
+
         </div>
       </div>
     </div>

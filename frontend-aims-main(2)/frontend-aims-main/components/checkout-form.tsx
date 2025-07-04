@@ -128,7 +128,7 @@ export default function CheckoutForm() {
     setIsProcessing(true)
 
     try {
-      const result = await processCheckout(formData, shippingCalculation)
+      const result = await processCheckout(formData, shippingCalculation,state.items)
       console.log(finalTotal)
       let paymentUrl = await VnpayTrigger(finalTotal)
       window.location.href = paymentUrl

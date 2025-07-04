@@ -20,7 +20,7 @@ export async function calculateShippingFees(
 
 
   let order = getOrderFromLocalStorage()
-   
+
   if (order && order.orderLineList) {
     order.orderLineList = order.orderLineList.map((orderline: any) => {
       // Tìm orderLine tương ứng từ tham số orderLines
@@ -99,16 +99,30 @@ export async function createDeliveryInformation(
 export async function processCheckout(
   checkoutData: CheckoutFormData,
   shippingCalculation: ShippingCalculation,
+  cart: any
 ): Promise<{ success: boolean; orderId?: number; error?: string; clearCart?: boolean }> {
   try {
+
     const response = await SubmitDeliveryInfo({
       ...checkoutData.deliveryInfo,
       delivery_id: 0,
       delivery_fee: shippingCalculation.totalShipping,
     })
-    
+
     console.log(response.delivery_information)
     saveDeliveryToLocalStorage(response.delivery_information)
+
+    // Create new OrderlineList with title from cart
+    const enhancedOrderLineList = checkoutData.orderLineList.map(orderLine => {
+      // Find corresponding cart item to get product title
+      const cartItem = cart.find((item: any) => item.product.product_id === orderLine.product_id)
+
+      return {
+        ...orderLine,
+        title: cartItem ? cartItem.product.title : 'Unknown Product'
+      }
+    })
+
     // Send order data to backend for Order and OrderLine creation
     const orderPayload = {
       order_id: 0,
@@ -120,8 +134,8 @@ export async function processCheckout(
       payment_method: checkoutData.paymentMethod,
       orderLineList: checkoutData.orderLineList,
     }
-
     saveOrderToLocalStorage(orderPayload)
+    saveOrderlineList(enhancedOrderLineList)
 
     return { success: true, clearCart: true }
   } catch (error) {
@@ -131,8 +145,8 @@ export async function processCheckout(
 }
 
 export async function VnpayTrigger(amount: number) {
-  
-  const response = await api.post("/api/payment",
+
+  const response = await api.post("/payorder/payment",
     {
       amount: amount,
       bankCode: "NCB",
@@ -142,3 +156,12 @@ export async function VnpayTrigger(amount: number) {
   )
   return response.paymentUrl
 }
+
+function saveOrderlineList(orderlineList: any) {
+  localStorage.setItem("orderlineList", JSON.stringify(orderlineList))
+}
+
+export function getOrderlineList() {
+  const orderlineList = localStorage.getItem("orderlineList")
+  return orderlineList ? JSON.parse(orderlineList) : null
+} 

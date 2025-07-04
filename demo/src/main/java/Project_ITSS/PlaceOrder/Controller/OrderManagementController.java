@@ -23,7 +23,7 @@ public class OrderManagementController {
     private OrderService_PlaceOrder orderService;
 
     @GetMapping("/orders")
-    public ResponseEntity<List<OrderInfo>> getALlOrders(){
+    public ResponseEntity<List<OrderInfo>> getAllOrders(){
         return ResponseEntity.ok(orderService.getAllOrders());
     }
 
@@ -39,5 +39,4 @@ public class OrderManagementController {
             return ResponseEntity.badRequest().body(response);
         }
     }
-
 }

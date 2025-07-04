@@ -45,8 +45,9 @@ export default function OrderTracking() {
         description: "Failed to get order details",
         variant: "destructive",
       })
+      setIsLoading(false)
+      return
     }
-    console.log(response)
     let order = response.order
     setOrderInfo(order)
     toast({

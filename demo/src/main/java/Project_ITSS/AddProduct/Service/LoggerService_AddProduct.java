@@ -29,6 +29,7 @@ public class LoggerService_AddProduct {
     }
 
     public boolean checkValidAddProducts() {
+
         return loggerRepository.checkValidAddProducts();
     }
 }

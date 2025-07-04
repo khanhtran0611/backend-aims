@@ -19,12 +19,12 @@ public class Orderline {
     private String delivery_time;
     private String instructions;
 
-    public void createOrderline(int product_id,int quantity,int price){
-         this.total_fee = quantity * price;
-         this.quantity = quantity;
-         this.status = "pending";
-         this.product_id = product_id;
-    }
+    // public void createOrderline(int product_id,int quantity,int price){
+    //      this.total_fee = quantity * price;
+    //      this.quantity = quantity;
+    //      this.status = "pending";
+    //      this.product_id = product_id;
+    // }
 
 
 

@@ -32,9 +32,9 @@ export default function OrderSummary() {
       })
       return
     }
-    const order = await createOrder(state.items)
-    saveOrderToLocalStorage(order)
-    console.log(order)
+    const response = await createOrder(state.items)
+    saveOrderToLocalStorage(response.order)
+    console.log(response)
     // Navigate to checkout page
     router.push("/checkout")
   }

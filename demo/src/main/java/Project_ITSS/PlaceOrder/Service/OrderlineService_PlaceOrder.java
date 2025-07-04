@@ -19,5 +19,14 @@ public class OrderlineService_PlaceOrder {
         }
     }
 
+    public Orderline createOrderline(int product_id,int quantity,int price){
+        Orderline orderline = new Orderline();
+        orderline.setTotal_fee(quantity * price);
+        orderline.setQuantity(quantity);
+        orderline.setStatus("pending");
+        orderline.setProduct_id(product_id);
+        return orderline;
+    }
+
 
 }
