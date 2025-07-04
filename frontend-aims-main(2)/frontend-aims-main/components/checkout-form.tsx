@@ -96,8 +96,6 @@ export default function CheckoutForm() {
 
   // Trong render, chỉ sử dụng state
   const finalTotal = total + shippingCalculation.totalShipping
-  console.log(total)
-  console.log(shippingCalculation.totalShipping)
   if (selectedItems.length === 0) {
     return (
       <div className="text-center py-16">
@@ -457,22 +455,22 @@ export default function CheckoutForm() {
               <Separator />
               <div className="space-y-1">
                 <div className="font-medium">Shipping Fees:</div>
-                {shippingCalculation.regularShipping > 0 && (
+                {shippingCalculation.freeShippingDiscount > 0 && (
+                  <div className="flex justify-between text-xs text-green-600">
+                    <span>• Free shipping discount:</span>
+                    <span>-{formatCurrency(shippingCalculation.freeShippingDiscount)}</span>
+                  </div>
+                )}
+                {shippingCalculation.regularShipping >= 0 && (
                   <div className="flex justify-between text-xs">
                     <span>• Regular shipping:</span>
                     <span>{formatCurrency(shippingCalculation.regularShipping)}</span>
                   </div>
                 )}
-                {shippingCalculation.rushShipping > 0 && (
+                {shippingCalculation.rushShipping >= 0 && (
                   <div className="flex justify-between text-xs">
                     <span>• Rush shipping:</span>
                     <span>{formatCurrency(shippingCalculation.rushShipping)}</span>
-                  </div>
-                )}
-                {shippingCalculation.freeShippingDiscount > 0 && (
-                  <div className="flex justify-between text-xs text-green-600">
-                    <span>• Free shipping discount:</span>
-                    <span>-{formatCurrency(shippingCalculation.freeShippingDiscount)}</span>
                   </div>
                 )}
                 <div className="flex justify-between">

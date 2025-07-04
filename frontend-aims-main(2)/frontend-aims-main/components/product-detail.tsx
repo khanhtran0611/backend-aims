@@ -177,10 +177,10 @@ export default function ProductDetail({ product }: ProductDetailProps) {
                   <span className="font-medium">Barcode:</span>
                   <div className="text-muted-foreground">{product.barcode}</div>
                 </div>
-                <div>
+                {/* <div>
                   <span className="font-medium">Import Date:</span>
                   <div className="text-muted-foreground">{product.import_date}</div>
-                </div>
+                </div> */}
               </div>
             </CardContent>
           </Card>

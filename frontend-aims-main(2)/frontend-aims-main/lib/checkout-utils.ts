@@ -48,6 +48,8 @@ export async function calculateShippingFees(
   )
   saveOrderToLocalStorage(order)
 
+  console.log(response)
+
   return {
     regularShipping: response.regularShipping,
     rushShipping: response.rushShipping,
