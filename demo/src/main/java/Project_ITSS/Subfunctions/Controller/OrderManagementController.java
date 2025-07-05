@@ -1,11 +1,11 @@
-package Project_ITSS.PlaceOrder.Controller;
+package Project_ITSS.Subfunctions.Controller;
 
 
-import Project_ITSS.PlaceOrder.DTO.OrderDetailResponse;
-import Project_ITSS.PlaceOrder.DTO.OrderInfo;
-import Project_ITSS.PlaceOrder.DTO.OrderTrackingInfo;
-import Project_ITSS.PlaceOrder.Service.OrderService_PlaceOrder;
-import Project_ITSS.PlaceOrder.Service.ProcessTrackingInfo;
+import Project_ITSS.Subfunctions.DTO.OrderDetailResponse;
+import Project_ITSS.Subfunctions.DTO.OrderInfo;
+import Project_ITSS.Subfunctions.DTO.OrderTrackingInfo;
+import Project_ITSS.Subfunctions.Service.OrderService_Subfunction;
+import Project_ITSS.Subfunctions.Service.ProcessTrackingInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,7 @@ public class OrderManagementController {
     @Autowired
     private ProcessTrackingInfo processTrackingInfo;
     @Autowired
-    private OrderService_PlaceOrder orderService;
+    private OrderService_Subfunction orderService;
 
     @GetMapping("/orders")
     public ResponseEntity<List<OrderInfo>> getAllOrders(){

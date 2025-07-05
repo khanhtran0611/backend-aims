@@ -1,4 +1,4 @@
-package Project_ITSS.CancelOrder.Entity;
+package Project_ITSS.Subfunctions.Entity;
 
 
 import lombok.Getter;
@@ -18,5 +18,15 @@ public class Orderline {
     private int total_fee;
     private String delivery_time;
     private String instructions;
+
+    // public void createOrderline(int product_id,int quantity,int price){
+    //      this.total_fee = quantity * price;
+    //      this.quantity = quantity;
+    //      this.status = "pending";
+    //      this.product_id = product_id;
+    // }
+
+
+
 
 }

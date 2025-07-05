@@ -12,30 +12,6 @@ public class OrderRepository_CancelOrder {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public void saveOrder(Order order, DeliveryInformation dI){
-        // Insert vào DeliveryInformation và lấy delivery_id vừa tạo
-        String sqlDelivery = "INSERT INTO DeliveryInformation (Name, Phone, Email, Address, Province, Shipping_message, shipping_fee) VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING delivery_id";
-        Long deliveryId = jdbcTemplate.queryForObject(sqlDelivery, new Object[]{
-            dI.getName(),
-            dI.getPhone(),
-            dI.getEmail(),
-            dI.getAddress(),
-            dI.getProvince(),
-            dI.getDelivery_message(),
-            dI.getDelivery_fee()
-        }, Long.class);
-
-        order.setDelivery_id(deliveryId);
-
-        // Insert vào Order, có delivery_id
-        jdbcTemplate.update("INSERT INTO \"Order\" (order_id, delivery_id, Total_before_VAT, Total_after_VAT, status, VAT) VALUES (?,?,?,?,?,?)",
-            order.getOrder_id(),
-            order.getDelivery_id(),
-            order.getTotal_before_VAT(),
-            order.getTotal_after_VAT(),
-            order.getStatus(),
-            order.getVAT());
-    }
 
     public Order getOrderById(long order_id){
         String sql = "SELECT * FROM \"Order\" WHERE order_id = ?";

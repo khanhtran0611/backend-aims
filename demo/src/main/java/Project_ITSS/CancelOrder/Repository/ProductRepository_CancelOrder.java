@@ -1,9 +1,7 @@
 package Project_ITSS.CancelOrder.Repository;
 
 //import Project_ITSS.demo.Entity.Product;
-import Project_ITSS.CancelOrder.Entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 

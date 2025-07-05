@@ -1,6 +1,6 @@
 package Project_ITSS.CancelOrder.Service;
 
-import Project_ITSS.CancelOrder.Entity.DeliveryInfo;
+
 import Project_ITSS.CancelOrder.Entity.DeliveryInformation;
 import Project_ITSS.CancelOrder.Entity.Order;
 import Project_ITSS.CancelOrder.Entity.Orderline;

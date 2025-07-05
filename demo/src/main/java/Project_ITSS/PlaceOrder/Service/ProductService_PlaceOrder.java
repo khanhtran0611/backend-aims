@@ -21,7 +21,4 @@ public class ProductService_PlaceOrder {
         else return true;
     }
 
-    public void updateProductQuantity(int order_id) {
-        productRepository.updateProductQuantity(order_id);
-    }
 }

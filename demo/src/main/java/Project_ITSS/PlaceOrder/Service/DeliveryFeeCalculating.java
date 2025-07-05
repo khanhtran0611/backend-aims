@@ -20,7 +20,6 @@ public class DeliveryFeeCalculating implements IDeliveryFeeCalculating {
         Order order = calculateFeeDTO.getOrder();
         String province = calculateFeeDTO.getProvince();
         List<Orderline> orderlineList = order.getOrderLineList();
-        System.out.println(orderlineList.size());
         int normal_delivery_fee = 0;
         int rush_delivery_fee = 0;
         if(province.equals("Hanoi") || province.equals("Ho Chi Minh City")){
@@ -43,7 +42,6 @@ public class DeliveryFeeCalculating implements IDeliveryFeeCalculating {
         }else{
             for (Orderline orderline : orderlineList){
                 double weight = productRepository.getProductWeight(orderline.getProduct_id());
-                System.out.println(weight);
                 int total = 0;
                 total += 30000;
                 weight = (weight - 0.5);
@@ -58,8 +56,9 @@ public class DeliveryFeeCalculating implements IDeliveryFeeCalculating {
                 }
             }
         }
-        if(order.getTotal_before_VAT() > 100000){
+        if(order.getTotal_after_VAT() > 100000){
             normal_delivery_fee = (normal_delivery_fee > 25000) ? normal_delivery_fee - 25000 : 0;
+            rush_delivery_fee = (rush_delivery_fee > 25000) ? rush_delivery_fee - 25000 : 0;
         }
         int[] delivery_fees = {normal_delivery_fee,rush_delivery_fee};
         return delivery_fees;

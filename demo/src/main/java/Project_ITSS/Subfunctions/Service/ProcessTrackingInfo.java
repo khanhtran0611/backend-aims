@@ -1,12 +1,12 @@
-package Project_ITSS.PlaceOrder.Service;
+package Project_ITSS.Subfunctions.Service;
 
 
-import Project_ITSS.PlaceOrder.DTO.OrderTrackingInfo;
-import Project_ITSS.PlaceOrder.DTO.ProductItem;
-import Project_ITSS.PlaceOrder.Entity.Order;
-import Project_ITSS.PlaceOrder.Repository.DeliveryInfoRepository_PlaceOrder;
-import Project_ITSS.PlaceOrder.Repository.OrderRepository_PlaceOrder;
-import Project_ITSS.PlaceOrder.Repository.OrderlineRepository_PlaceOrder;
+import Project_ITSS.Subfunctions.DTO.OrderTrackingInfo;
+import Project_ITSS.Subfunctions.DTO.ProductItem;
+import Project_ITSS.Subfunctions.Entity.Order;
+import Project_ITSS.Subfunctions.Repository.DeliveryInfoRepository_Subfunction;
+import Project_ITSS.Subfunctions.Repository.OrderRepository_Subfunction;
+import Project_ITSS.Subfunctions.Repository.OrderlineRepository_Subfunction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +17,11 @@ import java.util.Map;
 @Service
 public class ProcessTrackingInfo {
     @Autowired
-    private OrderRepository_PlaceOrder orderRepository;
+    private OrderRepository_Subfunction orderRepository;
     @Autowired
-    private OrderlineRepository_PlaceOrder orderlineRepository;
+    private OrderlineRepository_Subfunction orderlineRepository;
     @Autowired
-    private DeliveryInfoRepository_PlaceOrder deliveryInfoRepository;
+    private DeliveryInfoRepository_Subfunction deliveryInfoRepository;
 
     public OrderTrackingInfo getTrackingOrder(int order_id){
         Order order = orderRepository.getOrderById(order_id);

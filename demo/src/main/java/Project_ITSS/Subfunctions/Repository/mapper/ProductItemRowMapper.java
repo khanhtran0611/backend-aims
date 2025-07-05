@@ -1,6 +1,6 @@
-package Project_ITSS.PlaceOrder.Repository.mapper;
+package Project_ITSS.Subfunctions.Repository.mapper;
 
-import Project_ITSS.PlaceOrder.DTO.ProductItem;
+import Project_ITSS.Subfunctions.DTO.ProductItem;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

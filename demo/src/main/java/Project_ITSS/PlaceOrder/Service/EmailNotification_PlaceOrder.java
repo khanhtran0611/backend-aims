@@ -14,7 +14,6 @@ public class EmailNotification_PlaceOrder {
     private JavaMailSender javaMailSender;
     public void SendSuccessEmail(String toEmail,String subject,String content){
         SimpleMailMessage message = new SimpleMailMessage();
-        System.out.println(toEmail);
         message.setTo(toEmail);
         message.setSubject(subject);
         message.setText(content);

@@ -1,4 +1,4 @@
-package Project_ITSS.CancelOrder.Entity;
+package Project_ITSS.Subfunctions.Entity;
 
 
 import lombok.Getter;
@@ -19,5 +19,8 @@ public class Product {
     private String import_date;
     private String introduction;
     private int quantity;
+
+
+
 
 }

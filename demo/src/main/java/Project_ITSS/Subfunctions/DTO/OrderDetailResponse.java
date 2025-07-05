@@ -1,4 +1,4 @@
-package Project_ITSS.PlaceOrder.DTO;
+package Project_ITSS.Subfunctions.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

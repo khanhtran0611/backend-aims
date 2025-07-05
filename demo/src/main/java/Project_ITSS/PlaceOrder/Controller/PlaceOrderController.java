@@ -3,7 +3,6 @@ package Project_ITSS.PlaceOrder.Controller;
 import Project_ITSS.PlaceOrder.DTO.*;
 import Project_ITSS.PlaceOrder.Entity.*;
 import Project_ITSS.PlaceOrder.Exception.PlaceOrderException;
-import Project_ITSS.PlaceOrder.Repository.OrderRepository_PlaceOrder;
 import Project_ITSS.PlaceOrder.Service.*;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,14 +42,7 @@ public class PlaceOrderController {
     private DeliveryInformationService deliveryInformationService;
     @Autowired
     private OrderlineService_PlaceOrder orderlineService;
-    @Autowired
-    private InfoValidationService infoValidationService;
 
-    @GetMapping("/test")
-    public ResponseEntity<String> JustForFun(){
-        System.out.println(100);
-        return ResponseEntity.ok("Test successful");
-    }
 
     public boolean validateDeliveryInfoStringLength(DeliveryInformation deliveryInfo) {
         if (deliveryInfo == null) {
@@ -93,7 +85,6 @@ public class PlaceOrderController {
         for(CartItem cartItem : cart.getProducts()){
             Product product = cartItem.getProduct();
             int quantity = cartItem.getQuantity();
-            System.out.println(product.getProduct_id());
             if(product == null){
                 throw new PlaceOrderException("Product is null");
             }
@@ -138,7 +129,7 @@ public class PlaceOrderController {
            RecalculateResponse response = new RecalculateResponse(deliveryfees[0], deliveryfees[1], deliveryfee,"sucessfully");
            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new RecalculateResponse(0,0,0,"The server has error. Please try again later."));
+            return ResponseEntity.status(500).body(new RecalculateResponse(0,0,0,"The server has error. Please try again later."));
         }
     }
 
@@ -149,8 +140,6 @@ public class PlaceOrderController {
         Order order = orderInfoDTO.getOrder();
         int delivery_id = deliveryInformationService.saveDeliveryInfo(deliveryInformation);
         order.setDelivery_id(delivery_id);
-        System.out.println(deliveryInformation.getDelivery_fee());
-        System.out.println(order.getTotal_after_VAT());
         orderService.saveOrder(order);
         orderlineService.saveOrderlines(order);
         // Cập nhật số lượng sản phẩm sau khi lưu orderline

@@ -1,18 +1,9 @@
 package Project_ITSS.PlaceOrder.Service;
 
-import Project_ITSS.PlaceOrder.DTO.OrderInfo;
-import Project_ITSS.PlaceOrder.DTO.PlaceOrderResponse;
 import Project_ITSS.PlaceOrder.Entity.*;
-import Project_ITSS.PlaceOrder.Exception.PlaceOrderException;
-import Project_ITSS.PlaceOrder.Repository.DeliveryInfoRepository_PlaceOrder;
 import Project_ITSS.PlaceOrder.Repository.OrderRepository_PlaceOrder;
-import Project_ITSS.PlaceOrder.Repository.OrderlineRepository_PlaceOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class OrderService_PlaceOrder {
@@ -26,9 +17,6 @@ public class OrderService_PlaceOrder {
         orderRepository.saveOrder(order);
     }
 
-    public List<OrderInfo> getAllOrders(){
-         return orderRepository.getALlOrders();
-    }
 
     public Order createOrder(Cart cart){
         Order order = new Order();

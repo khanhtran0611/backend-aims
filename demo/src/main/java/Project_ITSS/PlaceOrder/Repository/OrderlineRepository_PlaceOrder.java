@@ -1,9 +1,7 @@
 package Project_ITSS.PlaceOrder.Repository;
 
 import Project_ITSS.PlaceOrder.Entity.Orderline;
-import Project_ITSS.PlaceOrder.DTO.ProductItem;
 import Project_ITSS.PlaceOrder.Exception.PlaceOrderException;
-import Project_ITSS.PlaceOrder.Repository.mapper.ProductItemRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,23 +15,6 @@ public class OrderlineRepository_PlaceOrder {
     private JdbcTemplate jdbcTemplate;
 
 
-    public Orderline getOrderlinebyId(int odrline_id){
-        try{
-            String sql = "SELECT * FROM OrderLines WHERE odrline_id = ?";
-            return jdbcTemplate.queryForObject(sql,new Object[]{odrline_id},new BeanPropertyRowMapper<>(Orderline.class));
-        }catch (Exception e){
-            throw new PlaceOrderException(e.getMessage());
-        }
-    }
-
-    public List<Orderline> getOrderLinebyOrderId(int order_id){
-        try{
-            String sql = "SELECT * FROM OrderLines WHERE order_id = ?";
-            return jdbcTemplate.query(sql,new Object[]{order_id},new BeanPropertyRowMapper<>(Orderline.class));
-        }catch (Exception e){
-            throw new PlaceOrderException(e.getMessage());
-        }
-    }
 
     public void saveOrderline(Orderline orderline,int order_id){
         try{
@@ -60,17 +41,5 @@ public class OrderlineRepository_PlaceOrder {
             throw new PlaceOrderException(e.getMessage());
         }
     }
-
-    public List<ProductItem> getProductItemByOrderId(int order_id){
-        try{
-        String sql = "SELECT ol.*,p.title,p.price FROM Product p JOIN Orderline ol USING(product_id) JOIN \"Order\" o USING(order_id) WHERE o.order_id = ?";
-        return jdbcTemplate.query(sql, new Object[]{order_id}, new ProductItemRowMapper());
-        }catch(Exception e){
-            e.printStackTrace();
-            throw new PlaceOrderException(e.getMessage());
-        }
-    }
-
-
 
 }

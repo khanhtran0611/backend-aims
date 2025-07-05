@@ -1,7 +1,6 @@
 package Project_ITSS.CancelOrder.Service;
 
 import Project_ITSS.CancelOrder.Entity.Order;
-import Project_ITSS.CancelOrder.Entity.DeliveryInformation;
 import Project_ITSS.CancelOrder.Repository.IOrderRepository;
 import Project_ITSS.CancelOrder.Service.INotificationService;
 import Project_ITSS.vnpay.common.repository.TransactionRepository;
