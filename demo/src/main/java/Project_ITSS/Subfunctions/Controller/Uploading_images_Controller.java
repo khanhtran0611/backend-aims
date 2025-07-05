@@ -1,4 +1,4 @@
-package Project_ITSS.Subfunctions;
+package Project_ITSS.Subfunctions.Controller;
 
 
 import org.springframework.stereotype.Repository;
