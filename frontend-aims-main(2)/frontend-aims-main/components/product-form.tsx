@@ -270,7 +270,8 @@ export default function ProductForm({ product, onSave, onClose }: ProductFormPro
       }
       // Nếu có ảnh mới (khác ảnh cũ)
       if (selectedFile && ('/' + selectedFile.name !== originalImageUrl)) {
-        await uploadImage(selectedFile)
+        let res = await uploadImage(selectedFile)
+        formData.image_url = '/' +  res.filename
       }
 
       const baseProduct = {
